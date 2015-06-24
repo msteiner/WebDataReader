@@ -1,5 +1,7 @@
 package org.ms.core.reader;
 
+import org.ms.type.Address;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,6 +18,7 @@ public class HttpReader {
 
     public static final String USER_AGENT               = "Google Chrome 39.0.2171.71";
     public static final String MARKER_BLOCK             = "<h3 class='marker index'>";
+    public static final String MARKER_BLOCK_EOF         = "<script src=";
     public static final String MARKER_NAME_START        = "<h4>";
     public static final String MARKER_NAME_END          = "</h4>";
     public static final String MARKER_CATEGORY_START    = "<div class='edge'></div>";
@@ -48,15 +51,18 @@ public class HttpReader {
 
         int startIndex = 0;
         int endIndex = 0;
+        boolean hasMoreElements = true;
         String entry = null;
         List<String> list = new ArrayList<String>();
 
         // parse entry blocks
-        while (true) {
+        while (hasMoreElements) {
             startIndex = content.indexOf(MARKER_BLOCK, startIndex);
             endIndex = content.indexOf(MARKER_BLOCK, startIndex + MARKER_BLOCK.length());
             if (endIndex == -1) {
-                break;
+                //break;
+                endIndex = content.indexOf(MARKER_BLOCK_EOF, startIndex + MARKER_BLOCK.length());
+                hasMoreElements = false;
             }
             entry = content.substring(startIndex, endIndex).trim();
             formatText(entry);
@@ -71,7 +77,8 @@ public class HttpReader {
         // Parse attributes
         String name = parseAttribute(entry, MARKER_NAME_START, MARKER_NAME_END);
         String category = parseAttribute(entry, MARKER_CATEGORY_START, MARKER_CATEGORY_END);
-        String address = parseAttribute(entry, MARKER_ADDRESS_START, MARKER_ADDRESS_END);
+        String addressValue = parseAttribute(entry, MARKER_ADDRESS_START, MARKER_ADDRESS_END);
+        Address address = parseAddress(addressValue);
         String phoneLabel = parseAttribute(entry, MARKER_PHONE_LABEL_START, MARKER_PHONE_LABEL_END);
         String phone = parsePhone(entry);
         String url = parseAttribute(entry, MARKER_URL_START, MARKER_URL_END);
@@ -81,7 +88,15 @@ public class HttpReader {
         buffer.append(SEPERATOR);
         buffer.append(category);
         buffer.append(SEPERATOR);
-        buffer.append(address);
+
+        buffer.append(address.getStreet());
+        buffer.append(SEPERATOR);
+        buffer.append(address.getStreetNumber());
+        buffer.append(SEPERATOR);
+        buffer.append(address.getZip());
+        buffer.append(SEPERATOR);
+        buffer.append(address.getCity());
+
         buffer.append(SEPERATOR);
         buffer.append(phoneLabel);
         buffer.append(SEPERATOR);
@@ -100,8 +115,36 @@ public class HttpReader {
         } else if (isNumeric(parseAttribute(entry, MARKER_PHONE_2_START, MARKER_PHONE_2_END))) {
             return parseAttribute(entry, MARKER_PHONE_2_START, MARKER_PHONE_2_END);
         }
-        
+
         return phone;
+    }
+
+
+    public Address parseAddress(String value) {
+
+        Address address = new Address();
+        int pos1 = 0;
+        int pos2 = 0;
+        int pos3 = value.indexOf(",");
+        int pos4 = 0;
+        String streetNumber = value.substring(pos1, pos3);
+        pos2 = streetNumber.lastIndexOf(" ");
+        String street = value.substring(pos1, pos2);
+        String number = value.substring(pos2, pos3);
+        number = number.replaceAll(" ", "");
+
+        String zipCity = value.substring(pos3, value.length());
+        pos4 = zipCity.indexOf(" ", 2);
+        String zip = zipCity.substring(1, pos4);
+        zip = zip.replaceAll(" ", "");
+        String city = zipCity.substring(pos4 + 1, zipCity.length());
+
+        address.setStreet(street);
+        address.setStreetNumber(number);
+        address.setZip(zip);
+        address.setCity(city);
+
+        return address;
     }
 
     private boolean isNumeric(String value) {
@@ -194,11 +237,17 @@ public class HttpReader {
     }
 
     private void printList(List<String> list) {
-        System.out.println("================================================================================");
+        System.out.println("=== These are your data records, Tommy! ========================================");
+        System.out.println("  1. Lege irgendwo auf deiner Disk oder Stick oder sonstwo ein leeres File mit ");
+        System.out.println("     dem file type *.csv an.");
+        System.out.println("  2. Kopiere die nachfolgenden Daten da rein.");
+        System.out.println("  3. Öffne das Ding dann mit Excel zum Sortieren/Korrigieren/Erweitern.");
+        System.out.println("--------------------------------------------------------------------------------");
         for (String row : list) {
             System.out.println(row);
         }
         System.out.println("================================================================================");
+
     }
 
     public enum RequestMethod {
