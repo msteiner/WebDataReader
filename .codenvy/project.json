@@ -1,0 +1,1 @@
+{"mixinTypes":[],"builders":{"configs":{},"default":"maven"},"runners":{"configs":{"system:/java/standalone/simple/gui":{"ram":1000,"variables":{},"options":{}}},"default":"system:/java/standalone/simple/gui"},"description":"A web data reader base.","type":"maven","attributes":{"languageVersion":["1.6"],"language":["java"]}}
