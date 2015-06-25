@@ -1,4 +1,5 @@
 # WebDataReader
+<<<<<<< HEAD
  A WebDataReader for several things
  
 Usage:
@@ -21,3 +22,6 @@ A: Nein.
 
 Q: Wo werden Abfrageparameter aktualisiert?
 A: In der Class org.ms.core.reader.HttpReader. Ausgelagerte Konfigurationen sind derzeit nicht vorgesehen.
+=======
+WebDataReader for several things
+>>>>>>> master@WebDataReader/master
