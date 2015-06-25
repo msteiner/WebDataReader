@@ -4,20 +4,35 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.ms.type.Address;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HttpReaderTest {
 
-    public static final String URL    = "http://yellow.local.ch/de/print/q?page=3&print=text&what=Restaurant";
+    public static final String URL_1  = "http://yellow.local.ch/de/print/q?page=3&print=text&what=Restaurant";
+    public static final String URL_2  = "http://yellow.local.ch/de/print/q?page=3&print=text&what=Restaurant";
+    public static final String URL_3  = "http://yellow.local.ch/de/print/q?page=3&print=text&what=Restaurant";
+    //public static final String URL_4  = "http://yellow.local.ch/naechstePage";
+    //public static final String URL_5  = "http://yellow.local.ch/nochnePage";
+    // Und so weiter: Beliebig viele. Nur existieren müssen sie.
     HttpReader                 reader = new HttpReader();
 
     @Test
     public void testReadAddresses() {
-        String content = reader.readAddresses(URL);
-        System.out.println(content);
+        List<String> urls = new ArrayList<String>();
+        urls.add(URL_1);
+        urls.add(URL_2);
+        urls.add(URL_3);
+        //urls.add(URL_4);
+        //urls.add(URL_5);
+        //Und so weiter: Ebenso beliebig viele...
+        List<String> addresses = reader.readAddresses(urls);
+        reader.printList(addresses);
     }
 
-  /**
-   * Data set 9 throws an assertion failure, cause street/number is not a implemented format. You have to fix data manually...
-   */
+    /**
+     * Data set 9 throws an assertion failure, cause street/number is not a implemented format. You have to fix data manually...
+     */
     @Test
     public void testParseAddress() {
 

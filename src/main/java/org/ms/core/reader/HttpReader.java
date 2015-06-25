@@ -39,15 +39,22 @@ public class HttpReader {
     public static final String SEPERATOR                = ";";
 
 
-    public String readAddresses(String url) {
+    public List<String> readAddresses(List<String> urls) {
+        List<String> entries = new ArrayList<String>();
+        for (String url : urls) {
+            entries.addAll(readAddresses(url));
+        }
 
-        String content = readURLContent(url);
-        parse(content);
-
-        return "";
+        return entries;
     }
 
-    private void parse(String content) {
+    public List<String> readAddresses(String url) {
+
+        String content = readURLContent(url);
+        return parse(content);
+    }
+
+    private List<String> parse(String content) {
 
         int startIndex = 0;
         int endIndex = 0;
@@ -69,7 +76,8 @@ public class HttpReader {
             list.add(parseEntry(entry));
             startIndex = endIndex;
         }
-        printList(list);
+        //printList(list);
+        return list;
     }
 
     private String parseEntry(String entry) {
@@ -236,7 +244,7 @@ public class HttpReader {
 
     }
 
-    private void printList(List<String> list) {
+    public void printList(List<String> list) {
         System.out.println("=== These are your data records, Tommy! ========================================");
         System.out.println("  1. Lege irgendwo auf deiner Disk oder Stick oder sonstwo ein leeres File mit ");
         System.out.println("     dem file type *.csv an.");

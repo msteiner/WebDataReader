@@ -1,5 +1,14 @@
 # WebDataReader
  A WebDataReader for several things
+ 
+Usage:
+1. Öffne die Class org.ms.core.reader.HttpReaderTest
+2. In 'public static final String URL..' die URL erfassen, resp. anpassen. Beispiele sind vorgegeben.
+3. Bei Bedarf weitere URL erfassen
+4. Die erfassten URL auch weiter unten in der Methode 'public void testReadAddresses()' erfassen. Beispiele sind vorgegeben.
+5. Für Ausführung in Codenvy: Über das Menu [Build] das Menuitem [Build] starten.
+6. In der Console unten die Adressen rauskopieren.
+7. Fertig!
 
 Summary
 
