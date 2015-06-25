@@ -9,8 +9,8 @@ import java.util.List;
 
 public class HttpReaderTest {
 
-    public static final String URL_1  = "http://yellow.local.ch/de/print/q?page=3&print=text&what=Restaurant";
-    public static final String URL_2  = "http://yellow.local.ch/de/print/q?page=3&print=text&what=Restaurant";
+    public static final String URL_1  = "http://yellow.local.ch/de/print/q?page=1&print=text&what=Restaurant";
+    public static final String URL_2  = "http://yellow.local.ch/de/print/q?page=2&print=text&what=Restaurant";
     public static final String URL_3  = "http://yellow.local.ch/de/print/q?page=3&print=text&what=Restaurant";
     //public static final String URL_4  = "http://yellow.local.ch/naechstePage";
     //public static final String URL_5  = "http://yellow.local.ch/nochnePage";
