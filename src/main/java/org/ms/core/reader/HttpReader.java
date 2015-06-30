@@ -81,7 +81,9 @@ public class HttpReader {
     }
 
     private String parseEntry(String entry) {
-        StringBuffer buffer = new StringBuffer();
+        //StringBuffer buffer = new StringBuffer();
+
+        List<String> list = initializeList(38);
         // Parse attributes
         String name = parseAttribute(entry, MARKER_NAME_START, MARKER_NAME_END);
         String category = parseAttribute(entry, MARKER_CATEGORY_START, MARKER_CATEGORY_END);
@@ -92,37 +94,56 @@ public class HttpReader {
         String url = parseAttribute(entry, MARKER_URL_START, MARKER_URL_END);
         url = url.replaceAll("\"", "");
 
-        buffer.append(name);
-        buffer.append(SEPERATOR);
-        buffer.append(category);
-        buffer.append(SEPERATOR);
+        setEntry(list, name, 0, true);
+        setEntry(list, address.getStreetNumber(), 9, true);
+        setEntry(list, address.getStreet(), 10, true);
+        setEntry(list, address.getCity(), 11, true);
+        setEntry(list, phone, 16, true);
+        setEntry(list, address.getZip(), 29, true);
 
-        buffer.append(address.getStreet());
-        buffer.append(SEPERATOR);
-        buffer.append(address.getStreetNumber());
-        buffer.append(SEPERATOR);
-        buffer.append(address.getZip());
-        buffer.append(SEPERATOR);
-        buffer.append(address.getCity());
-
-        buffer.append(SEPERATOR);
-        buffer.append(phoneLabel);
-        buffer.append(SEPERATOR);
-        buffer.append(phone);
-        buffer.append(SEPERATOR);
-        buffer.append(url);
-        buffer.append(SEPERATOR);
+        StringBuffer buffer = new StringBuffer();
+        for (String string : list) {
+            buffer.append(string);
+        }
 
         return buffer.toString();
+    }
+
+    private List<String> initializeList(int size) {
+        List<String> list = new ArrayList<String>();
+
+        for (int i = 0; i < size; i++) {
+            list.add("");
+            if (i == size - 1) {
+
+                setEntry(list, "", i, false);
+            } else {
+                setEntry(list, "", i, true);
+            }
+        }
+        return list;
+    }
+
+    private void setEntry(List<String> list, String value, int pos, boolean appendLimiter) {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("\"");
+        buffer.append(value);
+        buffer.append("\"");
+        if (appendLimiter) {
+            buffer.append(";");
+        }
+        list.set(pos, buffer.toString());
     }
 
     private String parsePhone(String entry) {
         String phone = "Cannot parse phone.";
         if (isNumeric(parseAttribute(entry, MARKER_PHONE_1_START, MARKER_PHONE_1_END))) {
-            return parseAttribute(entry, MARKER_PHONE_1_START, MARKER_PHONE_1_END);
+            phone = parseAttribute(entry, MARKER_PHONE_1_START, MARKER_PHONE_1_END);
         } else if (isNumeric(parseAttribute(entry, MARKER_PHONE_2_START, MARKER_PHONE_2_END))) {
-            return parseAttribute(entry, MARKER_PHONE_2_START, MARKER_PHONE_2_END);
+            phone = parseAttribute(entry, MARKER_PHONE_2_START, MARKER_PHONE_2_END);
         }
+
+        phone = phone.replaceFirst("0", "+41 ");
 
         return phone;
     }
