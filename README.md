@@ -11,6 +11,12 @@ Usage:
 6. In der Console unten die Adressen rauskopieren.
 7. Fertig!
 
+Errors:
+- Parserfehler in der Adresse
+  Folgende Fehler werden bisher in den Spalten ausgegeben:
+  - "NOT_CLEARLY_DEFINED_ADDRESS" : Die Felder "Street", "Number", "ZIP" und "City" sind nicht eindeutig und müssen manuell bereinigt werden.
+  - "NOT_CLEARLY_DEFINED_ZIP_CITY" : Die Felder "ZIP" und "City" sind nicht eindeutig und müssen manuell bereinigt werden.
+
 Summary
 
 Hi Tommy. Hier ist das Teilchen. Nachfolgend findest Du Dies und Das zur Nutzung.

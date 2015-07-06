@@ -38,6 +38,9 @@ public class HttpReader {
 
     public static final String SEPERATOR                = ";";
 
+    public static final String MSG_ERROR_INV_ADDRESS_1  = "NOT_CLEARLY_DEFINED_ADDRESS: ";
+    public static final String MSG_ERROR_INV_ZIPCITY    = "NOT_CLEARLY_DEFINED_ZIP_CITY";
+
 
     public List<String> readAddresses(List<String> urls) {
         List<String> entries = new ArrayList<String>();
@@ -86,10 +89,8 @@ public class HttpReader {
         List<String> list = initializeList(38);
         // Parse attributes
         String name = parseAttribute(entry, MARKER_NAME_START, MARKER_NAME_END);
-        String category = parseAttribute(entry, MARKER_CATEGORY_START, MARKER_CATEGORY_END);
         String addressValue = parseAttribute(entry, MARKER_ADDRESS_START, MARKER_ADDRESS_END);
         Address address = parseAddress(addressValue);
-        String phoneLabel = parseAttribute(entry, MARKER_PHONE_LABEL_START, MARKER_PHONE_LABEL_END);
         String phone = parsePhone(entry);
         String url = parseAttribute(entry, MARKER_URL_START, MARKER_URL_END);
         url = url.replaceAll("\"", "");
@@ -156,22 +157,45 @@ public class HttpReader {
         int pos2 = 0;
         int pos3 = value.indexOf(",");
         int pos4 = 0;
-        String streetNumber = value.substring(pos1, pos3);
-        pos2 = streetNumber.lastIndexOf(" ");
-        String street = value.substring(pos1, pos2);
-        String number = value.substring(pos2, pos3);
-        number = number.replaceAll(" ", "");
+        String street = "";
+        String number = "";
+        String zip = "";
+        String city = "";
 
-        String zipCity = value.substring(pos3, value.length());
-        pos4 = zipCity.indexOf(" ", 2);
-        String zip = zipCity.substring(1, pos4);
-        zip = zip.replaceAll(" ", "");
-        String city = zipCity.substring(pos4 + 1, zipCity.length());
+        if (pos3 == -1) {
+            address.setStreet(MSG_ERROR_INV_ADDRESS_1 + value);
+            address.setStreetNumber(MSG_ERROR_INV_ADDRESS_1 + value);
+            address.setZip(MSG_ERROR_INV_ADDRESS_1 + value);
+            address.setCity(MSG_ERROR_INV_ADDRESS_1 + value);
+        } else {
+            // Parse street and number
+            String streetNumber = value.substring(pos1, pos3);
+            pos2 = streetNumber.lastIndexOf(" ");
+            if (pos2 > pos1) {
+                street = value.substring(pos1, pos2);
+                number = value.substring(pos2, pos3);
+                number = number.replaceAll(" ", "");
+            } else {
+                street = streetNumber;
+            }
 
-        address.setStreet(street);
-        address.setStreetNumber(number);
-        address.setZip(zip);
-        address.setCity(city);
+            // parse zip and city
+            try {
+                String zipCity = value.substring(pos3, value.length());
+                pos4 = zipCity.indexOf(" ", 2);
+                zip = zipCity.substring(1, pos4);
+                zip = zip.replaceAll(" ", "");
+                city = zipCity.substring(pos4 + 1, zipCity.length());
+            } catch (IndexOutOfBoundsException e) {
+                zip = MSG_ERROR_INV_ZIPCITY;
+                city = MSG_ERROR_INV_ZIPCITY;
+            }
+
+            address.setStreet(street);
+            address.setStreetNumber(number);
+            address.setZip(zip);
+            address.setCity(city);
+        }
 
         return address;
     }
@@ -202,14 +226,14 @@ public class HttpReader {
         String inputLine = null;
         StringBuffer response = new StringBuffer();
         BufferedReader in = null;
-        int responseCode = 0;
+//        int responseCode = 0;
 
         obj = createURL(url);
         con = openConnection(obj);
         setRequestMethod(con, RequestMethod.GET);
         con.setRequestProperty("User-Agent", USER_AGENT);
         try {
-            responseCode = con.getResponseCode();
+//            responseCode = con.getResponseCode();
             in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
@@ -218,9 +242,6 @@ public class HttpReader {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        //print result
-        //System.out.println(response.toString());
 
         return response.toString();
     }
