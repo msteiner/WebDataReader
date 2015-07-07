@@ -44,17 +44,24 @@ public class HttpReader {
 
     public List<String> readAddresses(List<String> urls) {
         List<String> entries = new ArrayList<String>();
+        List<String> addressBlock = null;
         for (String url : urls) {
-            entries.addAll(readAddresses(url));
+            addressBlock = readAddresses(url);
+            if (addressBlock != null) {
+                entries.addAll(addressBlock);
+            }
+
         }
 
         return entries;
     }
 
     public List<String> readAddresses(String url) {
-
         String content = readURLContent(url);
-        return parse(content);
+        if (content != null) {
+            return parse(content);
+        }
+        return null;
     }
 
     private List<String> parse(String content) {
@@ -230,6 +237,9 @@ public class HttpReader {
         //        int responseCode = 0;
 
         obj = createURL(url);
+        if (obj == null) {
+            return null;
+        }
         con = openConnection(obj);
         setRequestMethod(con, RequestMethod.GET);
         con.setRequestProperty("User-Agent", USER_AGENT);

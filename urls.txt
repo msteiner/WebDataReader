@@ -1,1 +1,15 @@
+http://yellow.local.ch/de/print/q?page=1&print=text&rid=Iqus&what=gartenbau&where=Zurich+%28Region%29
+http://yellow.local.ch/de/print/q?page=2&print=text&rid=Iqus&what=gartenbau&where=Zurich+%28Region%29
+http://yellow.local.ch/de/print/q?page=3&print=text&rid=Iqus&what=gartenbau&where=Zurich+%28Region%29
+http://yellow.local.ch/de/print/q?page=4&print=text&rid=Iqus&what=gartenbau&where=Zurich+%28Region%29
+http://yellow.local.ch/de/print/q?page=5&print=text&rid=Iqus&what=gartenbau&where=Zurich+%28Region%29
+http://yellow.local.ch/de/print/q?page=6&print=text&rid=Iqus&what=gartenbau&where=Zurich+%28Region%29
+http://yellow.local.ch/de/print/q?page=7&print=text&rid=Iqus&what=gartenbau&where=Zurich+%28Region%29
+http://yellow.local.ch/de/print/q?page=8&print=text&rid=Iqus&what=gartenbau&where=Zurich+%28Region%29
 http://yellow.local.ch/de/print/q?page=9&print=text&rid=Iqus&what=gartenbau&where=Zurich+%28Region%29
+http://yellow.local.ch/de/print/q?page=10&print=text&rid=Iqus&what=gartenbau&where=Zurich+%28Region%29
+http://yellow.local.ch/de/print/q?page=11&print=text&rid=Iqus&what=gartenbau&where=Zurich+%28Region%29
+http://yellow.local.ch/de/print/q?page=12&print=text&rid=Iqus&what=gartenbau&where=Zurich+%28Region%29
+http://yellow.local.ch/de/print/q?page=13&print=text&rid=Iqus&what=gartenbau&where=Zurich+%28Region%29
+http://yellow.local.ch/de/print/q?page=14&print=text&rid=Iqus&what=gartenbau&where=Zurich+%28Region%29
+http://yellow.local.ch/de/print/q?page=15&print=text&rid=Iqus&what=gartenbau&where=Zurich+%28Region%29
