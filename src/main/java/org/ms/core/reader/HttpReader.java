@@ -86,7 +86,7 @@ public class HttpReader {
     private String parseEntry(String entry) {
         //StringBuffer buffer = new StringBuffer();
 
-        List<String> list = initializeList(38);
+        List<String> list = initializeList(39);
         // Parse attributes
         String name = parseAttribute(entry, MARKER_NAME_START, MARKER_NAME_END);
         String addressValue = parseAttribute(entry, MARKER_ADDRESS_START, MARKER_ADDRESS_END);
@@ -101,6 +101,7 @@ public class HttpReader {
         setEntry(list, address.getCity(), 11, true);
         setEntry(list, phone, 16, true);
         setEntry(list, address.getZip(), 29, true);
+        setEntry(list, url, 38, true);
 
         StringBuffer buffer = new StringBuffer();
         for (String string : list) {
@@ -155,7 +156,7 @@ public class HttpReader {
         Address address = new Address();
         int pos1 = 0;
         int pos2 = 0;
-        int pos3 = value.indexOf(",");
+        int pos3 = value.lastIndexOf(",");
         int pos4 = 0;
         String street = "";
         String number = "";
@@ -226,14 +227,14 @@ public class HttpReader {
         String inputLine = null;
         StringBuffer response = new StringBuffer();
         BufferedReader in = null;
-//        int responseCode = 0;
+        //        int responseCode = 0;
 
         obj = createURL(url);
         con = openConnection(obj);
         setRequestMethod(con, RequestMethod.GET);
         con.setRequestProperty("User-Agent", USER_AGENT);
         try {
-//            responseCode = con.getResponseCode();
+            //            responseCode = con.getResponseCode();
             in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
