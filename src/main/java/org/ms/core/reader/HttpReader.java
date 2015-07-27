@@ -33,8 +33,9 @@ public class HttpReader {
     public static final String MARKER_PHONE_2_START     = "<span class='value'>";
     public static final String MARKER_PHONE_2_END       = "</span>";
 
-    public static final String MARKER_URL_START         = "<span class='url'><a href=";
-    public static final String MARKER_URL_END           = " class=";
+    public static final String MARKER_URL_START         = " href=";
+    //public static final String MARKER_URL_END           = " class=";
+  public static final String MARKER_URL_END           = ">";
 
     public static final String SEPERATOR                = ";";
 
@@ -101,6 +102,10 @@ public class HttpReader {
         String phone = parsePhone(entry);
         String url = parseAttribute(entry, MARKER_URL_START, MARKER_URL_END);
         url = url.replaceAll("\"", "");
+        // replace parser failures.
+        if (!(url.contains("http://") || url.contains("www"))) {
+            url = "";
+        }
 
         setEntry(list, name, 0, true);
         setEntry(list, address.getStreetNumber(), 9, true);
